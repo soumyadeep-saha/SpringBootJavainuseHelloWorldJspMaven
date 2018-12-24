@@ -1,0 +1,152 @@
+SpringBootJavainuseHelloWorldJspMaven
+
+Spring Boot
+Over the years spring has become more and more complex as new functionalities have been added. Just visit the page-https://spring.io/projects and we will see all the spring projects we can use in our application for different functionalities. If one has to start a new spring project we have to add build path or add maven dependencies, configure application server, add spring configuration . So a lot of effort is required to start a new spring project as we have to currently do everything from scratch. Spring Boot is the solution to this problem. Spring boot has been built on top of existing spring framework. Using spring boot we avoid all the boilerplate code and configurations that we had to do previously. Spring boot thus helps us use the existing Spring functionalities more robustly and with minimum efforts.
+
+Spring Boot Tutorial
+
+Features of Spring boot-
+
+Auto-Configuration - No need to manually configure dispatcher servlet, static resource mappings, property source loader, message converters etc.
+Dependency Management - The different versions of commonly used libraries are pre-selected and grouped in different starter POMs that we can include in your project. By selecting one Spring Boot version we are implicitly selecting dozens of dependencies that we would have to otherwise select and harmonize ourself. Example-
+Advanced Externalized Configuration - There is a large list of bean properties that can be configured through application.properties file without touching java or xml config.
+Production support- We get health checking, application and jvm metrics, jmx via http and a few more things for free.
+Runnable Jars - We can package your application as a runnable jar with embedded tomcat included so it presents a self-contained deployment unit
+
+mvnw is a windows command script. If we have a maven already installed we dont need this command.
+
+@SpringBootApplication is a recent annotation that is added. It includes the below
+@SpringBootConfiguration
+@EnableAutoConfiguration --> it tels SB to downoad all the dependencies from facets or starter dependencies
+@ComponentScan(excludeFilters={@Filter(type=CUSTOM, classes={TypeExcludeFilter.class}), @Filter(type=CUSTOM, classes={AutoConfigurationExcludeFilter.class})})
+@Target(value={TYPE})
+@Retention(value=RUNTIME)
+@Documented
+@Inherited
+
+Create a controller
+
+In case of jar files
+Add jasper and jstl dependencies to work with jsp files
+In case of war files
+This is not needed
+
+Spring Boot Hello World Application- Create simple controller and jsp view
+
+In this post we create a spring boot application to display a simple welcome page.
+Video
+
+This tutorial is explained in the below Youtube Video.
+
+
+
+Lets Begin-
+
+Maven project will be as follows -
+
+Along with the Spring Boot dependencies we have also tomcat-embed-jasper and jstl jar dependencies as these required when jsp view is used. In the pom file add the following dependencies-
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.javainuse</groupId>
+	<artifactId>SpringBootHelloWorld</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>SpringBootHelloWorld</name>
+	<description>Demo project for Spring Boot</description>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.4.1.RELEASE</version>
+		<relativePath /> <!-- lookup parent from repository -->
+	</parent>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+
+</project>
+		
+
+ 
+Create the SpringBootHelloWorldApplication.java as below-
+package com.javainuse;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SpringBootHelloWorldApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(SpringBootHelloWorldApplication.class, args);
+	}
+}
+
+@RequestMapping maps /welcome request to firstPage() method.
+package com.javainuse.controllers;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+@Controller
+public class TestController {
+
+	@RequestMapping("/welcome")
+	public ModelAndView firstPage() {
+		return new ModelAndView("welcome");
+	}
+
+}
+
+In the application.properties we define the prefix and suffix as follows. So in the above controller the /welcome.html correctly maps to /WEB-INF/jsp/welcome.jsp.
+spring.mvc.view.prefix:/WEB-INF/jsp/
+spring.mvc.view.suffix:.jsp
+
+Last we define the welcome.jsp as below-
+	
+<h1>Welcome to Spring Boot</h1>
+
+Compile and the run the SpringBootHelloWorldApplication.java as a Java application.
+Go to localhost:8080/welcome
+Download Source Code
+Download it -
+Spring Boot Hello World Application
+
+
+
+
